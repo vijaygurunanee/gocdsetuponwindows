@@ -1,0 +1,66 @@
+    <pipelines group="testapplication-Pipelines">
+        <pipeline name="testapplication-Release">
+            <environmentvariables>
+                <variable name="Environment">
+                    <value>{env}</value>
+                </variable>
+                <variable name="ApplicationName">
+                    <value>testapplication</value>
+                </variable>
+                <variable name="WebsiteUser">
+                    <value>{WebsiteUser}</value>
+                </variable>
+            </environmentvariables>
+            <materials>
+                <git url="ssh://git@yourgitrepopath.com" />
+            </materials>
+            <stage name="FetchGitRepository" cleanWorkingDir="true">
+                <approval type="manual" />
+            </stage>
+            <stage name="BuildRepository" fetchMaterials="false">
+                <jobs>
+                    <job name="BuildSolution">
+                        <tasks>
+							<exec command="C:\windows\Microsoft.NET\Framework64\v4.0.30319\MsBuild.exe">
+								<arg>C:\go\agent\pipelines\testapplication-Release\testapplication.sln</arg>
+								<arg>/T:rebuild</arg>
+								<arg>/p:DeployOnBuild=true</arg>
+								<arg>/p:DebugSymbols=false</arg>
+								<arg>/p:Configuration=release</arg>
+								<arg>/p:VisualStudioVersion=12.0</arg>
+								<arg>/p:OutDir=C:\testapplication_Release</arg>
+								<runif status="passed" />
+							</exec>
+                        </tasks>
+                    </job>
+                </jobs>
+            </stage>
+            <stage name="DeployRepository" fetchMaterials="false">
+                <jobs>
+                    <job name="BuildSolution">
+                        <tasks>
+							<exec command="powershell">
+								<arg>deploysolution.ps1</arg>
+								<arg>-env %env%</arg>
+								<arg>-websiteuser %websiteuser%</arg>
+								<runif status="passed" />
+							</exec>
+                        </tasks>
+                    </job>
+                </jobs>
+            </stage>
+            <stage name="testapplication" fetchMaterials="false">
+                <jobs>
+                    <job name="BuildSolution">
+                        <tasks>
+							<exec command="powershell">
+								<arg>testapplication.ps1</arg>
+								<arg>-env %env%</arg>
+								<runif status="passed" />
+							</exec>
+                        </tasks>
+                    </job>
+                </jobs>
+            </stage>
+        </pipeline>
+    </pipelines>

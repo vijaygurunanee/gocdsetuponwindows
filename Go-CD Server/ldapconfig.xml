@@ -1,0 +1,39 @@
+    <security>
+      <authConfigs>
+        <authConfig id="profile-id" pluginId="cd.go.authentication.ldap">
+          <property>
+            <key>Url</key>
+            <value>ldap://yourldap.com</value>
+          </property>
+          <property>
+            <key>SearchBases</key>
+            <value>OU=Users,OU=Accounts,DC=yourldap,DC=com
+OU=Service,OU=Accounts,DC=yourldap,DC=com</value>
+          </property>
+          <property>
+            <key>ManagerDN</key>
+            <value>CN={yourldapuser},OU=Service,OU=Accounts,DC=yourldap,DC=com</value>
+          </property>
+          <property>
+            <key>Password</key>
+            <value>{secret}</value>
+          </property>
+          <property>
+            <key>UserSearchFilter</key>
+            <value>(SamAccountName={0})</value>
+          </property>
+          <property>
+            <key>UserLoginFilter</key>
+            <value>(SamAccountName={0})</value>
+          </property>
+          <property>
+            <key>DisplayNameAttribute</key>
+            <value />
+          </property>
+          <property>
+            <key>EmailAttribute</key>
+            <value />
+          </property>
+        </authConfig>
+      </authConfigs>
+    </security>
