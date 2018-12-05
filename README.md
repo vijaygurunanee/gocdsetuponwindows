@@ -9,6 +9,9 @@ To use this scripts, following steps are required to execute.
 * Change installation scripts accordingly.
 * Decide the authentication methods required for Go-CD access and change domain-join or configuration steps accordingly.
 
+##### Note
+This is just a demo so it is not production ready, you can add something to improve it.
+
 Complete documentation of the Go-CD configuration can be found here:
 https://docs.gocd.org/current/
 
